@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+dist-server/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Local source documents and generated reference material; keep client payroll data out of deployment
+/public/assets/aistudio/

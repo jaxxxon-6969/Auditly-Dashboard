@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: auditly
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: AUDITLY_OWNER_EMAIL
+        sync: false
+      - key: AUDITLY_STORAGE_BUCKET
+        value: auditly-private

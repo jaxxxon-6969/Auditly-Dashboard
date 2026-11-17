@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-lilac: #9A7AF1;
+  --color-lilac-light: #ECE6FD;
+  --color-obsidian: #0E0E10;
+  --color-sand: #FDF9F6;
+  --color-sand-alt: #FBF7F4;
+  --color-surface-low: #F7F3F0;
+  --color-stroke: #1E293B;
+  --color-stroke-soft: #E2DCD5;
+  --color-charcoal: #0F172A;
+  --color-slate-sec: #64748B;
+  --color-sidebar-muted: #94A3B8;
+  --color-emerald-mint: #10B981;
+  --color-mint-tint: #E6F8F0;
+  --color-coral-rose: #F43F5E;
+  --color-amber-gold: #F59E0B;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    background-color: #FDF9F6;
+    color: #0F172A;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Crisp custom scrollbars for internal table/panel scrolling only */
+.audit-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.audit-scroll::-webkit-scrollbar-track {
+  background: #F7F3F0;
+}
+
+.audit-scroll::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 2px;
+}
+
+.audit-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9A7AF1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
