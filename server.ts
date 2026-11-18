@@ -341,7 +341,6 @@ async function startServer() {
       }
       return response.json({ ok: true });
     } catch (error) {
-      console.error('[change-password] failed:', error);
       const message = error instanceof Error ? error.message : '';
       return response.status(400).json({
         error: message.toLowerCase().includes('password')
@@ -407,7 +406,6 @@ async function startServer() {
         temporaryPassword,
       });
     } catch (error) {
-            console.error('[client setup] failed:', error);
       if (supabaseUid) {
         try {
           const currentClients = (await readSupabaseJson<ClientAccount[]>('auditly/clients.json')) ?? [];
@@ -445,7 +443,7 @@ async function startServer() {
 
   app.put('/api/workspace/state', asyncRoute(async (request, response) => {
     const req = request as AuditRequest;
-    if (req.auditIdentity?.role !== 'owner') return response.status(403).json({ error: 'Only the auditor can update this workspace.' });
+    if (req.auditIdentity) return response.status(403).json({ error: 'Only the auditor can update this workspace.' });
     const clientId = await getClientIdForRequest(req, response);
     if (!clientId) return;
     if (!request.body || typeof request.body !== 'object') {
@@ -467,8 +465,8 @@ async function startServer() {
   // Upload & immediately parse Excel, EPF ECR PDF, or ESIC IP PDF
   app.post('/api/audit/upload', upload.single('file'), asyncRoute(async (request, res) => {
     const req = request as AuditRequest;
-    if (req.auditIdentity?.role !== 'owner') {
-      return res.status(403).json({ error: 'Only the auditor can upload source files.' });
+    if (req.auditIdentity) {
+      return res.status(403).json({ error: 'Please sign in to upload source files.' });
     }
     try {
       const slot = String(req.body?.slot ?? req.query?.slot ?? '') as
@@ -570,7 +568,7 @@ async function startServer() {
   // Remove a previously uploaded file slot
   app.delete('/api/audit/upload/:slot', asyncRoute(async (request, res) => {
     const req = request as AuditRequest;
-    if (req.auditIdentity?.role !== 'owner') {
+    if (req.auditIdentity) {
       return res.status(403).json({ error: 'Only the auditor can remove source files.' });
     }
     const slot = req.params.slot as 'excel' | 'epf' | 'esic';
@@ -744,8 +742,8 @@ async function startServer() {
   // Clear uploaded workspace to restore demo mode if requested
   app.post('/api/audit/reset-demo', asyncRoute(async (request, res) => {
     const req = request as AuditRequest;
-    if (req.auditIdentity?.role !== 'owner') {
-      return res.status(403).json({ error: 'Only the auditor can clear uploaded source files.' });
+    if (req.auditIdentity) {
+      return res.status(403).json({ error: 'Please sign in to clear uploaded source files.' });
     }
     const periodId = String(req.body?.periodId ?? 'oct-2026');
     const clientId = await getClientIdForRequest(req, res);
@@ -802,4 +800,3 @@ startServer().catch((err) => {
   console.error('Failed to start server:', err);
   process.exit(1);
 });
-
