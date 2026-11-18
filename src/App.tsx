@@ -298,7 +298,7 @@ export default function App() {
 
   useEffect(() => {
     if (
-      !runtimeConfig.authEnabled || identity?.role !== 'owner' ||
+      !runtimeConfig.authEnabled || !identity ||
       !activeClient || !workspaceReady || !workspaceHydratedRef.current
     ) return;
     const stateToSave: PersistedAuditState = {
@@ -691,7 +691,7 @@ export default function App() {
       : identity?.email?.split('@')[0]?.replace(/[._-]+/g, ' ').toUpperCase() ?? 'AUDITLY USER';
 
   const handleNavigate = (route: NavRoute) => {
-    if (isClientViewer && !['dashboard', 'employees', 'verification', 'reports'].includes(route)) return;
+    
     setActiveRoute(route);
   };
 
@@ -784,7 +784,7 @@ export default function App() {
         <Sidebar
           activeRoute={activeRoute}
           onNavigate={handleNavigate}
-          clientViewer={Boolean(isClientViewer)}
+          clientViewer={false}
           accountName={accountName}
           accountRole={isClientViewer ? 'Client access' : 'Lead Payroll Auditor'}
           flaggedCount={flaggedCount}
@@ -811,7 +811,7 @@ export default function App() {
 
           {runtimeConfig.authEnabled && (
             <div className="shrink-0 border-b border-[#E2DCD5] bg-[#F7F3F0] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#64748B]">
-              {isClientViewer ? 'Client view · read-only' : 'Auditor view'}
+              {isClientViewer ? 'Client workspace' : 'Auditor view'}
               {activeClient?.name ? <span className="normal-case tracking-normal"> · {activeClient.name}</span> : null}
             </div>
           )}
@@ -826,7 +826,7 @@ export default function App() {
                 onNavigate={handleNavigate}
                 onSelectVerificationFilter={setVerificationFilter}
                 onInspectEmployee={handleInspectEmployee}
-                readOnly={Boolean(isClientViewer)}
+                readOnly={false}
               />
             )}
 
@@ -863,7 +863,7 @@ export default function App() {
                 onUpdateStatus={handleUpdateRecordStatus}
                 onGoToManualReview={() => handleNavigate('manual-review')}
                 onGoToSettings={() => handleNavigate('settings')}
-                readOnly={Boolean(isClientViewer)}
+                readOnly={false}
               />
             )}
 
@@ -892,7 +892,7 @@ export default function App() {
                   );
                   showToast(`${title} (${fmt}) ready`);
                 }}
-                readOnly={Boolean(isClientViewer)}
+                readOnly={false}
               />
             )}
 
