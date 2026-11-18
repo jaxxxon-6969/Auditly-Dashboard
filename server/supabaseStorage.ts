@@ -19,14 +19,21 @@ function apiHeaders(key: string): Headers {
   return new Headers({ apikey: key });
 }
 
+function isMissingObject(status: number, body: string): boolean {
+  // Supabase can report a missing object as 400 with "not found" in the body.
+  return status === 404 || (status === 400 && /not.?found/i.test(body));
+}
+
 export async function readSupabaseJson<T>(objectName: string): Promise<T | null> {
   const { url, key, bucket } = requireStorageConfig();
   const response = await fetch(getObjectUrl(url, bucket, objectName), {
     headers: apiHeaders(key),
     cache: 'no-store',
   });
-  if (response.status === 404) return null;
   if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    if (isMissingObject(response.status, body)) return null;
+    console.error('[storage read]', objectName, response.status, body);
     throw new Error(`Could not read protected Auditly storage (${response.status}).`);
   }
   return (await response.json()) as T;
@@ -43,6 +50,8 @@ export async function writeSupabaseJson(objectName: string, value: unknown): Pro
     body: JSON.stringify(value),
   });
   if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    console.error('[storage write]', objectName, response.status, body);
     throw new Error(`Could not save protected Auditly data (${response.status}).`);
   }
 }
@@ -56,8 +65,10 @@ export async function deleteSupabaseObject(objectName: string): Promise<void> {
     headers,
     body: JSON.stringify({ prefixes: [objectName] }),
   });
-  if (response.status === 404) return;
   if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    if (isMissingObject(response.status, body)) return;
+    console.error('[storage delete]', objectName, response.status, body);
     throw new Error(`Could not remove protected Auditly data (${response.status}).`);
   }
 }
