@@ -406,6 +406,7 @@ async function startServer() {
         temporaryPassword,
       });
     } catch (error) {
+            console.error('[client setup] failed:', error);
       if (supabaseUid) {
         try {
           const currentClients = (await readSupabaseJson<ClientAccount[]>('auditly/clients.json')) ?? [];
@@ -800,3 +801,4 @@ startServer().catch((err) => {
   console.error('Failed to start server:', err);
   process.exit(1);
 });
+
