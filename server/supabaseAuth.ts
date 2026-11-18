@@ -100,7 +100,7 @@ export async function deleteSupabaseUser(uid: string): Promise<void> {
 export async function updateSupabasePassword(uid: string, password: string): Promise<void> {
   if (!secretKey) throw new Error('SUPABASE_SECRET_KEY is not configured.');
   await callSupabaseAuth<unknown>(`admin/users/${encodeURIComponent(uid)}`, secretKey, {
-    method: 'PATCH',
+    method: 'PUT',
     body: JSON.stringify({ password }),
   });
 }
