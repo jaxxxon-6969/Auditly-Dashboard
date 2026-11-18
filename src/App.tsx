@@ -297,6 +297,7 @@ export default function App() {
   }, [identity, activeClient, workspaceLoadSeq]);
 
   useEffect(() => {
+    // Both the auditor and the client can save changes to the workspace they have open.
     if (
       !runtimeConfig.authEnabled || !identity ||
       !activeClient || !workspaceReady || !workspaceHydratedRef.current
@@ -532,7 +533,6 @@ export default function App() {
     next: AuditSettings,
     notifyMessage?: string
   ) => {
-    if (identity?.role === 'client') return;
     const matchingChanged =
       next.differenceThreshold !== settings.differenceThreshold ||
       next.fuzzyNameThreshold !== settings.fuzzyNameThreshold ||
@@ -581,7 +581,6 @@ export default function App() {
     recordId: string,
     newStatus: VerificationStatus
   ) => {
-    if (identity?.role === 'client') return;
     setRecordsByPeriod((prev) => ({
       ...prev,
       [selectedPeriodId]: (prev[selectedPeriodId] ?? []).map((rec) =>
@@ -691,7 +690,6 @@ export default function App() {
       : identity?.email?.split('@')[0]?.replace(/[._-]+/g, ' ').toUpperCase() ?? 'AUDITLY USER';
 
   const handleNavigate = (route: NavRoute) => {
-    
     setActiveRoute(route);
   };
 
