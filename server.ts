@@ -341,6 +341,7 @@ async function startServer() {
       }
       return response.json({ ok: true });
     } catch (error) {
+      console.error('[change-password] failed:', error);
       const message = error instanceof Error ? error.message : '';
       return response.status(400).json({
         error: message.toLowerCase().includes('password')
