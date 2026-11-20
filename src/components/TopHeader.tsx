@@ -86,7 +86,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             onClick={() => {
               setProfileOpen((prev) => !prev);
             }}
-            aria-label="Open auditor profile menu"
+            aria-label="Open profile menu"
             className="flex items-center gap-1.5 pl-1 pr-2 py-0.5 bg-[#FFFFFF] border-2 border-[#1E293B] rounded-[4px] hover:bg-[#ECE6FD] transition-colors cursor-pointer"
           >
             <div className="w-5 h-5 rounded-[3px] bg-[#0E0E10] text-[#FFFFFF] text-[10px] font-display font-bold flex items-center justify-center">
@@ -105,9 +105,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                 {workspaceName && <div className="mt-1 truncate text-[10px] font-semibold text-[#7C5CE0]">{workspaceName}</div>}
               </div>
               <div className="p-1.5 space-y-1">
-                {identity?.role !== 'client' && (
-                  <>
-                    <button
+                <button
                   type="button"
                   onClick={() => {
                     setProfileOpen(false);
@@ -115,8 +113,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                   }}
                   className="w-full text-left px-2.5 py-1.5 text-xs font-medium text-[#0F172A] hover:bg-[#ECE6FD] rounded-[3px] cursor-pointer"
                 >
-                    Audit Threshold Settings
-                    </button>
+                  Audit Threshold Settings
+                </button>
                 <button
                   type="button"
                   onClick={() => {
@@ -125,14 +123,12 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                   }}
                   className="w-full text-left px-2.5 py-1.5 text-xs font-medium text-[#0F172A] hover:bg-[#ECE6FD] rounded-[3px] cursor-pointer"
                 >
-                    Export Summary Reports
+                  Export Summary Reports
                 </button>
-                    {runtimeConfig.authEnabled && (
-                      <button type="button" onClick={() => { setProfileOpen(false); onSwitchWorkspace(); }} className="w-full flex items-center gap-2 text-left px-2.5 py-1.5 text-xs font-medium text-[#0F172A] hover:bg-[#ECE6FD] rounded-[3px] cursor-pointer">
-                        <ArrowLeftRight className="h-3.5 w-3.5" /> Switch client workspace
-                      </button>
-                    )}
-                  </>
+                {runtimeConfig.authEnabled && identity?.role !== 'client' && (
+                  <button type="button" onClick={() => { setProfileOpen(false); onSwitchWorkspace(); }} className="w-full flex items-center gap-2 text-left px-2.5 py-1.5 text-xs font-medium text-[#0F172A] hover:bg-[#ECE6FD] rounded-[3px] cursor-pointer">
+                    <ArrowLeftRight className="h-3.5 w-3.5" /> Switch client workspace
+                  </button>
                 )}
                 {runtimeConfig.authEnabled && (
                   <button type="button" onClick={() => { setProfileOpen(false); onSignOut(); }} className="w-full flex items-center gap-2 text-left px-2.5 py-1.5 text-xs font-medium text-[#0F172A] hover:bg-[#ECE6FD] rounded-[3px] cursor-pointer">
