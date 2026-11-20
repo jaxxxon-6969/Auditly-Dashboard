@@ -1013,7 +1013,18 @@ export async function parseEpfEcrPdf(
     const repoNameMaxX = grossColX !== null ? grossColX - 10 : 225;
     const eeTargetX = eeColX ?? 408;
     const epfWagesTargetX = epfWagesColX ?? 276;
-
+    
+    console.log("EPF COLUMN DETECTION", {
+  uanColX,
+  ecrColX,
+  repoColX,
+  grossColX,
+  epfWagesColX,
+  eeColX,
+  eeTargetX,
+  epfWagesTargetX,
+});
+    
     for (const pg of pages) {
       // Determine vertical bounds of the table on this page
       let headerBottomY = 45;
