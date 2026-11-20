@@ -1118,6 +1118,12 @@ export async function parseEpfEcrPdf(
           .filter((t) => Math.abs(t.x - epfWagesTargetX) <= 35)
           .sort((a, b) => Math.abs(a.y - anchor.y) - Math.abs(b.y - anchor.y) || Math.abs(a.x - epfWagesTargetX) - Math.abs(b.x - epfWagesTargetX))[0];
 
+        console.log('EPF PARSE', {
+        name: memberName,
+        wage: wagesTok ? wagesTok.val : null,
+        ee: eeTok ? eeTok.val : null,
+        });
+
         parsed.push({
           lineNumber: parsed.length + 1,
           uan,
