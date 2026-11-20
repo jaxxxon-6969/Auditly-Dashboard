@@ -983,8 +983,8 @@ export async function parseEpfEcrPdf(
         else if (tl === 'ecr' && t.x > 100 && t.x < 200 && ecrColX === null) ecrColX = t.x;
         else if (tl === 'repository' && t.x > 140 && t.x < 230 && repoColX === null) repoColX = t.x;
         else if (tl === 'gross' && t.x > 200 && t.x < 280 && grossColX === null) grossColX = t.x;
-        else if (tl === 'epf' && t.x > 240 && t.x < 330 && epfWagesColX === null) epfWagesColX = t.x;
-        else if (tl === 'ee' && t.x > 370 && t.x < 460 && eeColX === null) eeColX = t.x;
+        else if (tl === 'epf' && epfWagesColX === null) epfWagesColX = t.x;
+        else if (tl === 'ee' && eeColX === null) eeColX = t.x;
       }
       if (eeColX !== null) break;
     }
@@ -1013,17 +1013,6 @@ export async function parseEpfEcrPdf(
     const repoNameMaxX = grossColX !== null ? grossColX - 10 : 225;
     const eeTargetX = eeColX ?? 408;
     const epfWagesTargetX = epfWagesColX ?? 276;
-    
-    console.log("EPF COLUMN DETECTION", {
-  uanColX,
-  ecrColX,
-  repoColX,
-  grossColX,
-  epfWagesColX,
-  eeColX,
-  eeTargetX,
-  epfWagesTargetX,
-});
     
     for (const pg of pages) {
       // Determine vertical bounds of the table on this page
